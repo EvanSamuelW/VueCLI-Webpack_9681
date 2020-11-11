@@ -15,33 +15,51 @@
         <v-spacer></v-spacer>
         <v-btn color="success" dark @click="dialog = true"> Tambah </v-btn>
       </v-card-title>
-      <v-data-table :headers="headers" :items="todos" :search="search">
+      <v-data-table
+        :headers="headers"
+        :items="todos"
+        :search="search"
+        :expanded.sync="expanded"
+        item-key="note"
+        show-expand
+      >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn small class="mr-2" @click="editItem(item)"> edit </v-btn>
-          <v-btn small @click="deleteItem(item)"> delete </v-btn>
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template>
 
-         
+        <template v-slot:[`item.priority`]="{ item }">
+          <v-chip v-show="item.priority == 'Penting'" color="red" label outlined>{{ item.priority }}</v-chip>
+          <v-chip v-show="item.priority =='Tidak Penting'" color="green" label outlined>{{ item.priority }}</v-chip>
+                    <v-chip v-show="item.priority =='Biasa'" color="blue" label outlined>{{ item.priority }}</v-chip>
+
+        </template>
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            <h1><strong>Note: </strong></h1>
+            {{ item.note }}
+          </td>
         </template>
       </v-data-table>
     </v-card>
 
-     <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title class="headline"
+          >Are you sure you want to delete this item?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+            >OK</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
@@ -74,12 +92,13 @@
 </template>
 <script>
 export default {
-  name: "List",
+  name: "ListUGD",
   data() {
     return {
       search: null,
       dialog: false,
-       dialogDelete: false,
+      dialogDelete: false,
+
       headers: [
         {
           text: "Task",
@@ -88,7 +107,6 @@ export default {
           value: "task",
         },
         { text: "Priority", value: "priority" },
-        { text: "Note", value: "note" },
         { text: "Actions", value: "actions" },
       ],
       todos: [
@@ -114,7 +132,7 @@ export default {
         note: "",
       },
       defaultItem: {
-          task: "",
+        task: "",
         priority: "",
         note: "",
       },
@@ -127,6 +145,7 @@ export default {
       },
     };
   },
+
   methods: {
     save() {
       if (this.edit > -1) {
@@ -160,31 +179,28 @@ export default {
       this.editTodo = item;
     },
     deleteItem(item) {
-       
-        this.delete = this.todos.indexOf(item)
-        this.editTodo = item,
-        this.dialogDelete = true
+      this.delete = this.todos.indexOf(item);
+      (this.editTodo = item), (this.dialogDelete = true);
     },
 
-     deleteItemConfirm () {
-        this.todos.splice(this.delete, 1)
-        this.closeDelete()
-      },
-       close () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editTodo = Object.assign({}, this.defaultItem)
-          this.delete = -1
-        })
-      },
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editTodo = Object.assign({}, this.defaultItem)
-          this.delete = -1
-        })
-      },
-
+    deleteItemConfirm() {
+      this.todos.splice(this.delete, 1);
+      this.closeDelete();
+    },
+    close() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editTodo = Object.assign({}, this.defaultItem);
+        this.delete = -1;
+      });
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editTodo = Object.assign({}, this.defaultItem);
+        this.delete = -1;
+      });
+    },
   },
 };
 </script>
