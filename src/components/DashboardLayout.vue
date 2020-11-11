@@ -3,9 +3,9 @@
     <v-navigation-drawer class="fullheight" width="256" permanent app fixed>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title"> Nama Kalian </v-list-item-title>
-          <v-list-item-subtitle> NPM </v-list-item-subtitle>
-        </v-list-item-content>
+          <v-list-item-title class="title"> Evan Samuel Wiyendra </v-list-item-title>
+          <v-list-item-subtitle> 180709681 </v-list-item-subtitle>
+        </v-list-item-content>c
       </v-list-item>
       <v-divider></v-divider>
       <v-list dense nav>
