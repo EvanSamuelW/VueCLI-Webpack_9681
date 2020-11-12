@@ -5,7 +5,7 @@
         <v-list-item-content>
           <v-list-item-title class="title"> Evan Samuel Wiyendra </v-list-item-title>
           <v-list-item-subtitle> 180709681 </v-list-item-subtitle>
-        </v-list-item-content>c
+        </v-list-item-content>
       </v-list-item>
       <v-divider></v-divider>
       <v-list dense nav>
@@ -35,7 +35,8 @@ export default {
       items: [
         { title: "Dashboard", to: "/" },
         { title: "GD", to: "/gd" },
-        {title: "UGD", to: "/ugd"}
+        {title: "UGD", to: "/ugd"},
+         {title: "Tugas", to: "/Tugas"}
       ],
     };
   },
